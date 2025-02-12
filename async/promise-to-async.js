@@ -37,18 +37,15 @@ let password = prompt("비밀번호를 입력해주세요: ");
 console.log(id);
 console.log(password);
 
-userStorage.loginUser(
-    id,
-    password,
-)
-    .then(user => {
+async function checkUser() {
+    try{
+        const user = await userStorage.loginUser(id, password);
         alert(`${user}님, 로그인 되었습니다.`);
-        return user;
-    })
-    .then(userStorage.getRoles)
-    .then(user => {
-        alert(`${user.name}님, ${user.role} 권한을 가집니다.`);
-        return user;
-    })
-    .then(console.log)
-    .catch(console.log);
+        const admin = await userStorage.getRoles(user);
+        alert(`${admin.name}님, ${admin.role} 권한을 가집니다.`);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+checkUser();
